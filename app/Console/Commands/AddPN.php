@@ -33,10 +33,7 @@ class AddPN extends Command
             $name = $version->names()->create(["name" => "山田　太郎", "ruby" => "やまだ　たろう"]);
             $number1 = $name->numbers()->create(["type"=>"自宅", "number"=>"050XXXXXXXX"]);
             $number2 = $name->numbers()->create(["type"=>"携帯", "number"=>"03XXXXXXXX"]);
-        });
 
-        DB::transaction(function () {
-            $version = PhoneBookVersion::create();
             $name = $version->names()->create(["name" => "田中　雄一", "ruby" => "たなか　ゆういち"]);
             $number1 = $name->numbers()->create(["type"=>"自宅", "number"=>"050XXXXXXXX"]);
             $number2 = $name->numbers()->create(["type"=>"携帯", "number"=>"03XXXXXXXX"]);
