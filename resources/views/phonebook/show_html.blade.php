@@ -10,6 +10,7 @@
                 <th>名前</th>
                 <th>電話種別</th>
                 <th>電話番号</th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>

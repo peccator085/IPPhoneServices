@@ -30,6 +30,8 @@ class PhoneBookController extends Controller
 
         if (str_starts_with($request->header("Accept"), "x-CiscoIPPhone")) {
             // xml request
+            $DIRECTORY_MAX_ROWS = 32;
+
             if (!$request->query->has("gyo")) {
                 // 電話帳ホーム
                 return response()->view("phonebook.show_xml")->header("Content-Type", "text/xml");
@@ -51,7 +53,17 @@ class PhoneBookController extends Controller
                         return preg_match($head_regex[$request->query("gyo")], $number->name->ruby);
                     });
                 }
-                return response()->view("phonebook.searchResult_xml", ["numbers" => $numbers])
+                $pages = ceil($numbers->count() / $DIRECTORY_MAX_ROWS);
+                $now = intval($request->query("page", "1"));
+                $prev = $now<=1||$pages<=$now?1:$now-1;
+                $prevPage = route("phonebook.show", ["gyo"=>$request->query("gyo"), "page"=>$prev]);
+                $next = $now>=$pages?$pages:$now+1;
+                $nextPage = route("phonebook.show", ["gyo"=>$request->query("gyo"), "page"=>$next]);
+                $numbers = $numbers->skip($DIRECTORY_MAX_ROWS*($now-1))->take($DIRECTORY_MAX_ROWS);
+
+                return response()->view("phonebook.searchResult_xml", [
+                    "numbers" => $numbers, "prevPage" => $prevPage, "nextPage" => $nextPage
+                ])
                     ->header("Content-Type", "text/xml");
             }
 
