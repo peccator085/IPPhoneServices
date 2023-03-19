@@ -21,5 +21,10 @@ Route::get('/', function (Request $request) {
     return view('main_html');
 })->name("main");
 
+
 Route::get('/phonebook/', [\App\Http\Controllers\PhoneBookController::class, 'show']) -> name("phonebook.show");
+Route::post("/phonebook/", [\App\Http\Controllers\PhoneBookController::class, "addAll"]) -> name("phonebook.addAll");
+Route::get("/phonebook/edit/{id?}", [\App\Http\Controllers\PhoneBookController::class, "edit"]) -> name("phonebook.edit");
+Route::post("/phonebook/edit/", [\App\Http\Controllers\PhoneBookController::class, "edit"]);
+Route::delete("/phonebook/delete/{id}", [\App\Http\Controllers\PhoneBookController::class, "edit"]) -> name("phonebook.delete");
 Route::get("/phonebook/getNameByNumber/{number}", [\App\Http\Controllers\PhoneBookController::class, "getNameByNumber"]);

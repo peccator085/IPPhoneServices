@@ -16,6 +16,8 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        \App\Models\PhoneBookVersion::create();
+
         Schema::create('phone_book_names', function (Blueprint $table) {
             $table->id();
             $table->string("name");
