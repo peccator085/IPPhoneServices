@@ -84,6 +84,10 @@ class PhoneBookController extends Controller
 
     public function addAll(Request $request): string|bool
     {
+        if (!is_array($request->input("names"))) return redirect()->route("phonebook.show");
+        foreach ($request->input("names") as $name) {
+            if (is_null($name["name"]) || !is_array($name["number"])) return redirect()->route("phonebook.show");
+        }
         DB::transaction(function () use ($request) {
             if ($request->boolean("overwrite")) {
                 $last_version = PhoneBookVersion::create();
@@ -93,16 +97,13 @@ class PhoneBookController extends Controller
                     ->first();
 
             }
-//        return $request->input("names");
-            if (!is_array($request->input("names"))) return;
             foreach ($request->input("names") as $name) {
-                if (!is_null($name["name"]) || !is_array($name["number"])) continue;
                 $name_obj = $last_version->names()->create([
                     "name" => $name["name"],
                     "ruby" => $name["ruby"]?:""
                 ]);
                 foreach ($name["number"] as $number) {
-                    if (!is_null($number["number"])) continue;
+                    if (is_null($number["number"])) continue;
                     $name_obj->numbers()->create([
                         "type" => $number["type"]?:"",
                         "number" => $this->strip_number($number["number"])
