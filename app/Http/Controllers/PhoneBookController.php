@@ -122,6 +122,7 @@ class PhoneBookController extends Controller
         $number = PhoneBookPhoneNumber::with("name")
             ->whereRelation("name", "version_id", "=", $last_version->id)
             ->where("number", "=", $number)->first();
+        if ($number == null) return abort(404);
         return response($number->name->name)->header("Content-Type", "text/plain");
     }
 
