@@ -28,3 +28,5 @@ Route::get("/phonebook/edit/{id?}", [\App\Http\Controllers\PhoneBookController::
 Route::post("/phonebook/edit/", [\App\Http\Controllers\PhoneBookController::class, "edit"]);
 Route::delete("/phonebook/delete/{id}", [\App\Http\Controllers\PhoneBookController::class, "edit"]) -> name("phonebook.delete");
 Route::get("/phonebook/getNameByNumber/{number}", [\App\Http\Controllers\PhoneBookController::class, "getNameByNumber"]);
+
+Route::get("/state/", [\App\Http\Controllers\PhoneState::class, "get"]) -> name("phone_state.get");
